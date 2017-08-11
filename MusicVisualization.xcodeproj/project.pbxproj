@@ -12,6 +12,14 @@
 		2B576D981F39AB7C0052F4E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B576D961F39AB7C0052F4E9 /* Main.storyboard */; };
 		2B576D9A1F39AB7C0052F4E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B576D991F39AB7C0052F4E9 /* Assets.xcassets */; };
 		2B576D9D1F39AB7C0052F4E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B576D9B1F39AB7C0052F4E9 /* LaunchScreen.storyboard */; };
+		2B576DB21F39AC170052F4E9 /* cross.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2B576DAD1F39AC170052F4E9 /* cross.wav */; };
+		2B576DB31F39AC170052F4E9 /* f2400.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2B576DAE1F39AC170052F4E9 /* f2400.wav */; };
+		2B576DB61F39AC170052F4E9 /* testAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B576DB11F39AC170052F4E9 /* testAudio.mp3 */; };
+		2BFCA44D1F3ADD8D0038C622 /* AudioFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFCA44C1F3ADD8D0038C622 /* AudioFileViewController.swift */; };
+		2BFCA4511F3AF6970038C622 /* testAudio2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2BFCA4501F3AF6970038C622 /* testAudio2.mp3 */; };
+		2BFCA4541F3B05CD0038C622 /* testAudio3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2BFCA4531F3B05CD0038C622 /* testAudio3.mp3 */; };
+		2BFCA4561F3B20A40038C622 /* AudioEngineManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFCA4551F3B20A40038C622 /* AudioEngineManager.swift */; };
+		2BFCA4581F3BFDB20038C622 /* VisualizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFCA4571F3BFDB20038C622 /* VisualizationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +30,15 @@
 		2B576D991F39AB7C0052F4E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2B576D9C1F39AB7C0052F4E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B576D9E1F39AB7C0052F4E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B576DAD1F39AC170052F4E9 /* cross.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cross.wav; sourceTree = "<group>"; };
+		2B576DAE1F39AC170052F4E9 /* f2400.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = f2400.wav; sourceTree = "<group>"; };
+		2B576DB11F39AC170052F4E9 /* testAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testAudio.mp3; sourceTree = "<group>"; };
+		2BFCA44C1F3ADD8D0038C622 /* AudioFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFileViewController.swift; sourceTree = "<group>"; };
+		2BFCA4501F3AF6970038C622 /* testAudio2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testAudio2.mp3; sourceTree = "<group>"; };
+		2BFCA4521F3AF6A20038C622 /* Speak.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Speak.m4a; sourceTree = "<group>"; };
+		2BFCA4531F3B05CD0038C622 /* testAudio3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = testAudio3.mp3; sourceTree = "<group>"; };
+		2BFCA4551F3B20A40038C622 /* AudioEngineManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioEngineManager.swift; sourceTree = "<group>"; };
+		2BFCA4571F3BFDB20038C622 /* VisualizationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +71,31 @@
 		2B576D911F39AB7C0052F4E9 /* MusicVisualization */ = {
 			isa = PBXGroup;
 			children = (
+				2B576DAC1F39AC170052F4E9 /* audio */,
 				2B576D921F39AB7C0052F4E9 /* AppDelegate.swift */,
 				2B576D941F39AB7C0052F4E9 /* ViewController.swift */,
+				2BFCA44C1F3ADD8D0038C622 /* AudioFileViewController.swift */,
+				2BFCA4571F3BFDB20038C622 /* VisualizationView.swift */,
+				2BFCA4551F3B20A40038C622 /* AudioEngineManager.swift */,
 				2B576D961F39AB7C0052F4E9 /* Main.storyboard */,
 				2B576D991F39AB7C0052F4E9 /* Assets.xcassets */,
 				2B576D9B1F39AB7C0052F4E9 /* LaunchScreen.storyboard */,
 				2B576D9E1F39AB7C0052F4E9 /* Info.plist */,
 			);
 			path = MusicVisualization;
+			sourceTree = "<group>";
+		};
+		2B576DAC1F39AC170052F4E9 /* audio */ = {
+			isa = PBXGroup;
+			children = (
+				2B576DAD1F39AC170052F4E9 /* cross.wav */,
+				2B576DAE1F39AC170052F4E9 /* f2400.wav */,
+				2BFCA4521F3AF6A20038C622 /* Speak.m4a */,
+				2B576DB11F39AC170052F4E9 /* testAudio.mp3 */,
+				2BFCA4531F3B05CD0038C622 /* testAudio3.mp3 */,
+				2BFCA4501F3AF6970038C622 /* testAudio2.mp3 */,
+			);
+			path = audio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,8 +159,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B576D9D1F39AB7C0052F4E9 /* LaunchScreen.storyboard in Resources */,
+				2BFCA4541F3B05CD0038C622 /* testAudio3.mp3 in Resources */,
 				2B576D9A1F39AB7C0052F4E9 /* Assets.xcassets in Resources */,
+				2B576DB31F39AC170052F4E9 /* f2400.wav in Resources */,
 				2B576D981F39AB7C0052F4E9 /* Main.storyboard in Resources */,
+				2B576DB61F39AC170052F4E9 /* testAudio.mp3 in Resources */,
+				2BFCA4511F3AF6970038C622 /* testAudio2.mp3 in Resources */,
+				2B576DB21F39AC170052F4E9 /* cross.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,8 +176,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BFCA44D1F3ADD8D0038C622 /* AudioFileViewController.swift in Sources */,
+				2BFCA4581F3BFDB20038C622 /* VisualizationView.swift in Sources */,
 				2B576D951F39AB7C0052F4E9 /* ViewController.swift in Sources */,
 				2B576D931F39AB7C0052F4E9 /* AppDelegate.swift in Sources */,
+				2BFCA4561F3B20A40038C622 /* AudioEngineManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +346,7 @@
 				2B576DA31F39AB7C0052F4E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
