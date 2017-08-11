@@ -14,7 +14,7 @@ import UIKit
     @objc optional func didStopPlayingAudio(_ visualizationView: VisualizationView)
 }
 
-public class VisualizationView: UIView, AudioEngineManagerDelegate {
+public class VisualizationView: UIView {
     var delegate: VisualizationViewDelegate?
     
     var audioURL: URL? {
@@ -32,12 +32,9 @@ public class VisualizationView: UIView, AudioEngineManagerDelegate {
         }
     }
     
-    var barColor: UIColor {
-        get {
-            return self.tintColor
-        }
-        set {
-            self.subviews.forEach({ $0.backgroundColor = newValue })
+    @IBInspectable var barColor:UIColor = UIColor.red{
+        didSet {
+            self.subviews.forEach({ $0.backgroundColor = barColor })
         }
     }
     
@@ -68,28 +65,10 @@ public class VisualizationView: UIView, AudioEngineManagerDelegate {
     
     private var manager: AudioEngineManager?
     
-    private var frequncyValues: Array<Float> = [] {
+    fileprivate var frequncyValues: Array<Float> = [] {
         didSet(freqVals) {
             updateBarFrames()
         }
-    }
-
-    func playAudio() {
-        guard manager != nil else {
-            print("Error playing audio, manager is nil")
-            return
-        }
-        manager?.play()
-        self.delegate?.didStartPlayingAudio?(self)
-    }
-    
-    func stopAudio() {
-        guard manager != nil else {
-            print("Error playing audio, manager is nil")
-            return
-        }
-        manager?.stop()
-        self.delegate?.didStopPlayingAudio?(self)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -102,25 +81,39 @@ public class VisualizationView: UIView, AudioEngineManagerDelegate {
         self.initialize()
     }
     
-    override public func layoutSubviews() {
-        super.layoutSubviews()
+    public override func draw(_ rect: CGRect) {
+        super.draw(rect)
         self.updateBarFrames()
     }
+
+    func playAudio() {
+        guard let manager =  manager else {
+            print("Error playing audio, manager is nil")
+            return
+        }
+        manager.play()
+        self.delegate?.didStartPlayingAudio?(self)
+    }
     
-    func didUpdateFrequncyValues(frequncyValues: [Float]) {
-        self.frequncyValues = frequncyValues
+    func stopAudio() {
+        guard let manager =  manager else {
+            print("Error playing audio, manager is nil")
+            return
+        }
+        manager.stop()
+        self.delegate?.didStopPlayingAudio?(self)
     }
 
     private func initialize() {
         self.setupBarViews()
     }
     
-    private func setupBarViews() {
+    fileprivate func setupBarViews() {
         barViews.removeAll()
         self.subviews.forEach({$0.removeFromSuperview()})
         for _ in 0..<Int(barCount) {
             let view = UIView(frame: CGRect.zero)
-            view.backgroundColor = self.tintColor
+            view.backgroundColor = self.barColor
             barViews.append(view)
             self.addSubview(view)
         }
@@ -137,10 +130,23 @@ public class VisualizationView: UIView, AudioEngineManagerDelegate {
                 barHeight = viewHeight * CGFloat(self.frequncyValues[i].isNaN ? 1.0 : self.frequncyValues[i]);
                 barHeight = ceil(barHeight)
             }
-            barView.frame = CGRect(x: CGFloat(i)*(barWidth+barIntervalWidth) + barIntervalWidth/2,
-                                   y: (viewHeight-barHeight)/2,
-                                   width: barWidth,
-                                   height: barHeight);
+            
+            UIView.animate(withDuration: TimeInterval(self.bounds.height / 300), animations: {
+                barView.frame = CGRect(x: CGFloat(i)*(self.barWidth + self.barIntervalWidth) + self.barIntervalWidth/2,
+                                       y: (viewHeight-barHeight)/2,
+                                       width: self.barWidth,
+                                       height: barHeight);
+            })
         }
+    }
+}
+
+extension VisualizationView:AudioEngineManagerDelegate{
+    func didUpdateFrequncyValues(frequncyValues: [Float]) {
+        self.frequncyValues = frequncyValues
+    }
+    
+    func didFinish() {
+        self.frequncyValues.removeAll()
     }
 }

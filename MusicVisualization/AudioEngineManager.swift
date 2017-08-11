@@ -12,6 +12,7 @@ import Accelerate
 
 protocol AudioEngineManagerDelegate {
     func didUpdateFrequncyValues(frequncyValues: [Float])
+    func didFinish()
 }
 
 class AudioEngineManager: NSObject {
@@ -112,6 +113,9 @@ class AudioEngineManager: NSObject {
         print("finished playing")
         playerNode.stop()
         engine.stop()
+        DispatchQueue.main.async {
+            self.delegate?.didFinish()
+        }
     }
     
     //FFTPerform

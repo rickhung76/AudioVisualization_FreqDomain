@@ -24,7 +24,6 @@ class AudioFileViewController: UIViewController {
         visualizationView.audioURL = fileURL
         visualizationView.barWidth = 4.0
         visualizationView.barWidth = 6.0
-        visualizationView.barColor = UIColor.orange
     }
     
     @IBAction func control(_ sender: UIButton) {
