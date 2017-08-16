@@ -16,19 +16,18 @@ class AudioFileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let fileURL = Bundle.main.url(forResource: "testAudio2", withExtension: "mp3") else {
-            print("could not read sound file")
-            return
-        }
+        visualizationView.initAudioEngineManager()
         visualizationView.delegate = self
-        visualizationView.audioURL = fileURL
-        visualizationView.barWidth = 4.0
-        visualizationView.barWidth = 6.0
     }
     
     @IBAction func control(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
+            guard let fileURL = Bundle.main.url(forResource: "testAudio2", withExtension: "mp3") else {
+                print("could not read sound file")
+                return
+            }
+            visualizationView.audioURL = fileURL
             visualizationView.playAudio()
         }
         else {

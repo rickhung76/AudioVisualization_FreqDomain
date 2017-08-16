@@ -16,7 +16,12 @@ protocol AudioEngineManagerDelegate {
 }
 
 class AudioEngineManager: NSObject {
+    public static let shared:AudioEngineManager = {
+        let instance = AudioEngineManager()
+        return instance
+    }()
     var delegate: AudioEngineManagerDelegate?
+    var engineDidSetup = false
     var FFTSampleCount: Int = 0
     lazy var engine = AVAudioEngine()
     lazy var playerNode = AVAudioPlayerNode()
@@ -68,6 +73,10 @@ class AudioEngineManager: NSObject {
     }
     
     private func setupAudioEngine() {
+        if engineDidSetup {
+            return
+        }
+        
         engine.stop()
         engine.reset()
         
@@ -80,6 +89,7 @@ class AudioEngineManager: NSObject {
         mixerNode.installTap(onBus: 0, bufferSize: 1024, format: audioBufferFormat) { (buffer, time) in
             self.performFFT(buffer: buffer)
         }
+        engineDidSetup = true
         print("Audio engine did set")
     }
     

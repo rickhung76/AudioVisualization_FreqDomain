@@ -17,16 +17,17 @@ import UIKit
 public class VisualizationView: UIView {
     var delegate: VisualizationViewDelegate?
     
+    public func initAudioEngineManager() {
+        manager = AudioEngineManager.shared
+        manager?.FFTSampleCount = barCount
+    }
+    
     var audioURL: URL? {
         didSet {
             guard let audioURL = audioURL else {
                 print("VisualizationView received nil audioURL")
-                manager = nil
                 return
             }
-            manager = AudioEngineManager()
-            manager?.delegate = self
-            manager?.FFTSampleCount = barCount
             manager?.readFileIntoBuffer(fileURL: audioURL)
             self.delegate?.didRenderAudioFile?(self)
         }
@@ -38,14 +39,14 @@ public class VisualizationView: UIView {
         }
     }
     
-    var barWidth = CGFloat(8.0) {
+    var barWidth = CGFloat(4.0) {
         didSet {
             manager?.FFTSampleCount = barCount
             self.setupBarViews()
         }
     }
     
-    var barIntervalWidth = CGFloat(12.0) {
+    var barIntervalWidth = CGFloat(6.0) {
         didSet {
             manager?.FFTSampleCount = barCount
             self.setupBarViews()
@@ -91,6 +92,7 @@ public class VisualizationView: UIView {
             print("Error playing audio, manager is nil")
             return
         }
+        manager.delegate = self
         manager.play()
         self.delegate?.didStartPlayingAudio?(self)
     }
