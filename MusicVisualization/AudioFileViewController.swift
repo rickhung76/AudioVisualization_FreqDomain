@@ -13,11 +13,18 @@ import Accelerate
 class AudioFileViewController: UIViewController {
     
     @IBOutlet weak var visualizationView: VisualizationView!
+    
+    @IBOutlet weak var visualizationView2: VisualizationView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         visualizationView.initAudioEngineManager()
         visualizationView.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        visualizationView2.initAudioEngineManager()
+        visualizationView2.delegate = self
     }
     
     @IBAction func control(_ sender: UIButton) {
@@ -32,6 +39,21 @@ class AudioFileViewController: UIViewController {
         }
         else {
             visualizationView.stopAudio()
+        }
+    }
+    
+    @IBAction func control2(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+            guard let fileURL = Bundle.main.url(forResource: "testAudio", withExtension: "mp3") else {
+                print("could not read sound file")
+                return
+            }
+            visualizationView2.audioURL = fileURL
+            visualizationView2.playAudio()
+        }
+        else {
+            visualizationView2.stopAudio()
         }
     }
 }

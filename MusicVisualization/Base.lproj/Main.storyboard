@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F9V-s7-8f0" customClass="VisualizationView" customModule="MusicVisualization" customModuleProvider="target">
-                                <rect key="frame" x="23" y="84" width="284" height="151"/>
+                                <rect key="frame" x="45" y="60" width="284" height="151"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
@@ -32,12 +32,30 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NMT-jF-EJX">
-                                <rect key="frame" x="73" y="243" width="46" height="30"/>
+                                <rect key="frame" x="164" y="227" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Play"/>
-                                <state key="selected" title="Stop"/>
+                                <state key="normal" title="Play1"/>
                                 <connections>
                                     <action selector="control:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mLC-oi-x7i"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="goQ-sm-u8f" customClass="VisualizationView" customModule="MusicVisualization" customModuleProvider="target">
+                                <rect key="frame" x="45" y="303" width="284" height="151"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="barColor">
+                                        <color key="value" red="0.58530144559999997" green="0.59931687519999999" blue="0.74500697849999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="haG-c0-RN2">
+                                <rect key="frame" x="164" y="470" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Play2"/>
+                                <connections>
+                                    <action selector="control2:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NTi-D8-lPG"/>
+                                    <action selector="control:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dk1-5Y-y9l"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -45,6 +63,7 @@
                     </view>
                     <connections>
                         <outlet property="visualizationView" destination="F9V-s7-8f0" id="qHn-dT-p6m"/>
+                        <outlet property="visualizationView2" destination="goQ-sm-u8f" id="Q2y-Qn-Nm9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

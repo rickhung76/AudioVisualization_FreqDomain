@@ -73,12 +73,13 @@ class AudioEngineManager: NSObject {
     }
     
     private func setupAudioEngine() {
+
+        engine.stop()
+        engine.reset()
+        
         if engineDidSetup {
             return
         }
-        
-        engine.stop()
-        engine.reset()
         
         engine.attach(playerNode)
         engine.attach(mixerNode)
@@ -122,7 +123,7 @@ class AudioEngineManager: NSObject {
     private func didFinishedPlayingAudio() {
         print("finished playing")
         playerNode.stop()
-        engine.stop()
+//        engine.stop()
         DispatchQueue.main.async {
             self.delegate?.didFinish()
         }
