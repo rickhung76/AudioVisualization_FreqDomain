@@ -16,12 +16,7 @@ protocol AudioEngineManagerDelegate {
 }
 
 class AudioEngineManager: NSObject {
-    public static let shared:AudioEngineManager = {
-        let instance = AudioEngineManager()
-        return instance
-    }()
     var delegate: AudioEngineManagerDelegate?
-    var engineDidSetup = false
     var FFTSampleCount: Int = 0
     lazy var engine = AVAudioEngine()
     lazy var playerNode = AVAudioPlayerNode()
@@ -42,7 +37,7 @@ class AudioEngineManager: NSObject {
     }
     
     func readFileIntoBuffer(fileURL: URL) {
-
+        
         do {
             let file = try AVAudioFile(forReading: fileURL)
             audioBufferFormat = file.processingFormat
@@ -73,13 +68,8 @@ class AudioEngineManager: NSObject {
     }
     
     private func setupAudioEngine() {
-
         engine.stop()
         engine.reset()
-        
-        if engineDidSetup {
-            return
-        }
         
         engine.attach(playerNode)
         engine.attach(mixerNode)
@@ -90,7 +80,6 @@ class AudioEngineManager: NSObject {
         mixerNode.installTap(onBus: 0, bufferSize: 1024, format: audioBufferFormat) { (buffer, time) in
             self.performFFT(buffer: buffer)
         }
-        engineDidSetup = true
         print("Audio engine did set")
     }
     
@@ -121,11 +110,13 @@ class AudioEngineManager: NSObject {
     }
     
     private func didFinishedPlayingAudio() {
-        print("finished playing")
-        playerNode.stop()
-//        engine.stop()
-        DispatchQueue.main.async {
-            self.delegate?.didFinish()
+        if playerNode.isPlaying {
+            print("finished playing")
+            playerNode.stop()
+            engine.stop()
+            DispatchQueue.main.async {
+                self.delegate?.didFinish()
+            }
         }
     }
     
@@ -174,7 +165,7 @@ class AudioEngineManager: NSObject {
         }
         
         self.magnitudes = magnitudes.map { $0 / self.audioMaxValue }
-//        print("(\(magnitudes.count))(\(self.audioMaxValue))\(magnitudes[1])|\(magnitudes[magnitudes.count/2-1])|\(magnitudes[magnitudes.count-1])")
+        //        print("(\(magnitudes.count))(\(self.audioMaxValue))\(magnitudes[1])|\(magnitudes[magnitudes.count/2-1])|\(magnitudes[magnitudes.count-1])")
         vDSP_destroy_fftsetup(fftSetup)
     }
     

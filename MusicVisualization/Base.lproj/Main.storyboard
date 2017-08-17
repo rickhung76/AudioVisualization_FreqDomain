@@ -55,7 +55,6 @@
                                 <state key="normal" title="Play2"/>
                                 <connections>
                                     <action selector="control2:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NTi-D8-lPG"/>
-                                    <action selector="control:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dk1-5Y-y9l"/>
                                 </connections>
                             </button>
                         </subviews>
