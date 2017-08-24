@@ -11,6 +11,7 @@ import UIKit
 @objc public protocol VisualizationViewDelegate: NSObjectProtocol {
     @objc optional func didRenderAudioFile(_ visualizationView: VisualizationView)
     @objc optional func didStartPlayingAudio(_ visualizationView: VisualizationView)
+    @objc optional func didUpdatePlayerDuration(_ atPlayTime: TimeInterval)
     @objc optional func didStopPlayingAudio(_ visualizationView: VisualizationView)
 }
 
@@ -81,6 +82,12 @@ public class VisualizationView: UIView {
     
     private var manager: AudioEngineManager?
     
+    var playTime: TimeInterval = 0 {
+        didSet {
+            self.delegate?.didUpdatePlayerDuration?(playTime)
+        }
+    }
+    
     fileprivate var frequncyValues: Array<Float> = [] {
         didSet(freqVals) {
             updateBarFrames()
@@ -136,7 +143,6 @@ public class VisualizationView: UIView {
     }
     
     private func updateBarFrames() {
-        
         //Layout the bars based on the updated view frame
         for i in 0 ..< barViews.count {
             let barView = barViews[i]
@@ -158,7 +164,7 @@ public class VisualizationView: UIView {
 }
 
 extension VisualizationView:AudioEngineManagerDelegate{
-    func didUpdateFrequncyValues(frequncyValues: [Float]) {
+    func didUpdateFrequncyValues(frequncyValues: [Float], atPlayTime: TimeInterval) {
         self.frequncyValues = frequncyValues
     }
     

@@ -11,7 +11,7 @@ import AVFoundation
 import Accelerate
 
 protocol AudioEngineManagerDelegate {
-    func didUpdateFrequncyValues(frequncyValues: [Float])
+    func didUpdateFrequncyValues(frequncyValues: [Float], atPlayTime: TimeInterval)
     func didFinish()
 }
 
@@ -32,7 +32,7 @@ class AudioEngineManager: NSObject {
                     print("AudioEngineManagerDelegate is nil")
                     return
                 }
-                self.delegate?.didUpdateFrequncyValues(frequncyValues: self.magnitudes)
+                self.delegate?.didUpdateFrequncyValues(frequncyValues: self.magnitudes, atPlayTime: self.currentTime())
             })
         }
     }
@@ -102,8 +102,16 @@ class AudioEngineManager: NSObject {
         
         mixerNode.installTap(onBus: 0, bufferSize: 1024, format: audioBufferFormat) { (buffer, time) in
             self.performFFT(buffer: buffer)
+            print("Player:\(self.currentTime())")
         }
         print("Audio engine did set")
+    }
+    
+    private func currentTime() -> TimeInterval {
+        if let nodeTime: AVAudioTime = self.playerNode.lastRenderTime, let playerTime: AVAudioTime = self.playerNode.playerTime(forNodeTime: nodeTime) {
+            return Double(Double(playerTime.sampleTime) / playerTime.sampleRate)
+        }
+        return 0
     }
     
     func setSessionPlayback() {

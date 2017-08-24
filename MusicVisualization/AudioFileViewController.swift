@@ -66,6 +66,10 @@ extension AudioFileViewController: VisualizationViewDelegate {
         print("didStartPlayingAudio")
     }
     
+    func didUpdatePlayerDuration(_ atPlayTime: TimeInterval) {
+        print("didUpdatePlayerDuration atPlayTime: \(atPlayTime)")
+    }
+    
     func didStopPlayingAudio(_ visualizationView: VisualizationView) {
         print("didStopPlayingAudio")
     }
