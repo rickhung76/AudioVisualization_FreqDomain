@@ -17,11 +17,26 @@ import UIKit
 public class VisualizationView: UIView {
     var delegate: VisualizationViewDelegate?
     
+    var enableMicrophone: Bool = false {
+        didSet {
+            guard enableMicrophone == true else {
+                print("VisualizationView enableMicrophone FALSE")
+                return
+            }
+            print("VisualizationView enableMicrophone TRUE")
+            manager = AudioEngineManager()
+            manager?.delegate = self
+            manager?.FFTSampleCount = barCount
+            manager?.setupAudioEngineWithMicNode()
+            self.delegate?.didRenderAudioFile?(self)
+        }
+    }
+    
     var audioURL: URL? {
         didSet {
             guard let audioURL = audioURL else {
                 print("VisualizationView received nil audioURL")
-                //                manager = nil
+//                manager = nil
                 return
             }
             print("VisualizationView received \(audioURL)")
@@ -86,7 +101,7 @@ public class VisualizationView: UIView {
         super.draw(rect)
         self.updateBarFrames()
     }
-    
+
     func playAudio() {
         guard let manager =  manager else {
             print("Error playing audio, manager is nil")
@@ -104,7 +119,7 @@ public class VisualizationView: UIView {
         manager.stop()
         
     }
-    
+
     private func initialize() {
         self.setupBarViews()
     }

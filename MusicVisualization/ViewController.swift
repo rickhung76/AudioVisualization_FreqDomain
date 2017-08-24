@@ -13,6 +13,8 @@ import Accelerate
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var visualizationView: VisualizationView!
+    
     var magnitudes:[Float]?
     
     let audioNode = AVAudioPlayerNode()
@@ -21,6 +23,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        visualizationView.delegate = self
+        visualizationView.enableMicrophone = true
+    }
+    
+    func  setupEngine() {
         let input = engine.inputNode!
         let output = engine.outputNode
         
@@ -34,12 +41,11 @@ class ViewController: UIViewController {
     }
     
     func start() {
-        try! engine.start()
+        visualizationView.playAudio()
     }
     
     func stop() {
-        mixer.removeTap(onBus: 0)
-        engine.stop()
+        visualizationView.stopAudio()
     }
     
     @IBAction func control(_ sender: UIButton) {
@@ -105,3 +111,16 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController: VisualizationViewDelegate {
+    func didRenderAudioFile(_ visualizationView: VisualizationView) {
+        print("didRenderAudioFile")
+    }
+    
+    func didStartPlayingAudio(_ visualizationView: VisualizationView) {
+        print("didStartPlayingAudio")
+    }
+    
+    func didStopPlayingAudio(_ visualizationView: VisualizationView) {
+        print("didStopPlayingAudio")
+    }
+}

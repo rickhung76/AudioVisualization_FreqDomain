@@ -17,6 +17,7 @@ protocol AudioEngineManagerDelegate {
 
 class AudioEngineManager: NSObject {
     var delegate: AudioEngineManagerDelegate?
+    var isPlayerSource = false
     var FFTSampleCount: Int = 0
     lazy var engine = AVAudioEngine()
     lazy var playerNode = AVAudioPlayerNode()
@@ -37,14 +38,14 @@ class AudioEngineManager: NSObject {
     }
     
     func readFileIntoBuffer(fileURL: URL) {
-        
+        isPlayerSource = true
         do {
             let file = try AVAudioFile(forReading: fileURL)
             audioBufferFormat = file.processingFormat
             audioBuffer = AVAudioPCMBuffer(pcmFormat: audioBufferFormat, frameCapacity: AVAudioFrameCount(file.length))
             try file.read(into: audioBuffer)
             
-            setupAudioEngine()
+            setupAudioEngineWithPlayerNode()
         } catch {
             print("could not create AVAudioPCMBuffer \(error)")
             return
@@ -53,6 +54,11 @@ class AudioEngineManager: NSObject {
     
     
     func play() {
+        if !isPlayerSource {
+            setSessionPlayback()
+            startAudioEngine()
+            return
+        }
         if playerNode.isPlaying {
             return
         } else {
@@ -64,10 +70,27 @@ class AudioEngineManager: NSObject {
     }
     
     func stop() {
+        if !isPlayerSource {
+            audioMaxValue = 1.0
+            engine.stop()
+            return
+        }
         didFinishedPlayingAudio()
     }
     
-    private func setupAudioEngine() {
+    func setupAudioEngineWithMicNode() {
+        let input = engine.inputNode!
+        let output = engine.outputNode
+
+        engine.attach(mixerNode)
+        mixerNode.installTap(onBus: 0, bufferSize: 64, format: input.inputFormat(forBus: 0)) { (buffer, when) in
+            self.performFFT(buffer: buffer)
+        }
+        engine.connect(input, to: mixerNode, format: input.inputFormat(forBus: 0))
+        engine.connect(mixerNode, to: output, format: input.inputFormat(forBus: 0))
+    }
+    
+    private func setupAudioEngineWithPlayerNode() {
         engine.stop()
         engine.reset()
         
@@ -165,7 +188,7 @@ class AudioEngineManager: NSObject {
         }
         
         self.magnitudes = magnitudes.map { $0 / self.audioMaxValue }
-        //        print("(\(magnitudes.count))(\(self.audioMaxValue))\(magnitudes[1])|\(magnitudes[magnitudes.count/2-1])|\(magnitudes[magnitudes.count-1])")
+//        print("(\(magnitudes.count))(\(self.audioMaxValue))\(magnitudes[1])|\(magnitudes[magnitudes.count/2-1])|\(magnitudes[magnitudes.count-1])")
         vDSP_destroy_fftsetup(fftSetup)
     }
     
