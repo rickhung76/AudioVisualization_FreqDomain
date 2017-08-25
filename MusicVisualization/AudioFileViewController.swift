@@ -34,10 +34,10 @@ class AudioFileViewController: UIViewController {
                 return
             }
             visualizationView.audioURL = fileURL
-            visualizationView.playAudio()
+            visualizationView.start()
         }
         else {
-            visualizationView.stopAudio()
+            visualizationView.stop()
         }
     }
     
@@ -49,10 +49,10 @@ class AudioFileViewController: UIViewController {
                 return
             }
             visualizationView2.audioURL = fileURL
-            visualizationView2.playAudio()
+            visualizationView2.start()
         }
         else {
-            visualizationView2.stopAudio()
+            visualizationView2.stop()
         }
     }
 }

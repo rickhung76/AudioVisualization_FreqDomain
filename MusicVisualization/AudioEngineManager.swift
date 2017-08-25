@@ -25,6 +25,7 @@ class AudioEngineManager: NSObject {
     var audioBuffer:AVAudioPCMBuffer!
     var audioBufferFormat:AVAudioFormat!
     var audioMaxValue: Float = 1.0
+    var audioMaxValueThreshold: Float = 0.6
     var magnitudes:[Float] = [0] {
         didSet {
             DispatchQueue.main.async(execute: { () -> Void in
@@ -73,6 +74,9 @@ class AudioEngineManager: NSObject {
         if !isPlayerSource {
             audioMaxValue = 1.0
             engine.stop()
+            DispatchQueue.main.async {
+                self.delegate?.didFinish()
+            }
             return
         }
         didFinishedPlayingAudio()
@@ -80,14 +84,14 @@ class AudioEngineManager: NSObject {
     
     func setupAudioEngineWithMicNode() {
         let input = engine.inputNode!
-        let output = engine.outputNode
+//        let output = engine.outputNode
 
         engine.attach(mixerNode)
         mixerNode.installTap(onBus: 0, bufferSize: 64, format: input.inputFormat(forBus: 0)) { (buffer, when) in
             self.performFFT(buffer: buffer)
         }
         engine.connect(input, to: mixerNode, format: input.inputFormat(forBus: 0))
-        engine.connect(mixerNode, to: output, format: input.inputFormat(forBus: 0))
+//        engine.connect(mixerNode, to: output, format: input.inputFormat(forBus: 0))
     }
     
     private func setupAudioEngineWithPlayerNode() {
@@ -108,6 +112,10 @@ class AudioEngineManager: NSObject {
     }
     
     private func currentTime() -> TimeInterval {
+        if !self.isPlayerSource {
+            return 0
+        }
+        
         if let nodeTime: AVAudioTime = self.playerNode.lastRenderTime, let playerTime: AVAudioTime = self.playerNode.playerTime(forNodeTime: nodeTime) {
             return Double(Double(playerTime.sampleTime) / playerTime.sampleRate)
         }
@@ -191,8 +199,8 @@ class AudioEngineManager: NSObject {
         vDSP_vsmul(sqrtq(magnitudes), 1, [2.0 / Float(inputCount)],
                    &normalizedMagnitudes, 1, vDSP_Length(inputCount))
         
-        if self.audioMaxValue < magnitudes.max()! {
-            self.audioMaxValue = magnitudes.max()!
+        if self.audioMaxValue < magnitudes.max()! * audioMaxValueThreshold {
+            self.audioMaxValue = magnitudes.max()! * audioMaxValueThreshold
         }
         
         self.magnitudes = magnitudes.map { $0 / self.audioMaxValue }

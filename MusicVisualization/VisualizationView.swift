@@ -17,11 +17,16 @@ import UIKit
 
 public class VisualizationView: UIView {
     var delegate: VisualizationViewDelegate?
+    @IBInspectable var isBarReverse:Bool = false
     
     var enableMicrophone: Bool = false {
         didSet {
             guard enableMicrophone == true else {
                 print("VisualizationView enableMicrophone FALSE")
+                return
+            }
+            
+            if manager != nil {
                 return
             }
             print("VisualizationView enableMicrophone TRUE")
@@ -109,7 +114,7 @@ public class VisualizationView: UIView {
         self.updateBarFrames()
     }
 
-    func playAudio() {
+    func start() {
         guard let manager =  manager else {
             print("Error playing audio, manager is nil")
             return
@@ -118,7 +123,7 @@ public class VisualizationView: UIView {
         self.delegate?.didStartPlayingAudio?(self)
     }
     
-    func stopAudio() {
+    func stop() {
         guard let manager =  manager else {
             print("Error playing audio, manager is nil")
             return
@@ -128,6 +133,7 @@ public class VisualizationView: UIView {
     }
 
     private func initialize() {
+        self.clipsToBounds = true
         self.setupBarViews()
     }
     
@@ -142,19 +148,34 @@ public class VisualizationView: UIView {
         }
     }
     
+    fileprivate func reIndexArray(_ array: Array<Any>) -> Array<Any> {
+        var newArray: Array<Any> = []
+        for i in 0..<array.count {
+            if i % 2 == 0 {
+                newArray.append(array[i])
+            }
+            else{
+                newArray.insert(array[i], at: 0)
+            }
+        }
+        return newArray
+    }
+    
     private func updateBarFrames() {
         //Layout the bars based on the updated view frame
+        let newFrequncyValues = reIndexArray(frequncyValues) as! Array<Float>
         for i in 0 ..< barViews.count {
             let barView = barViews[i]
             var barHeight = CGFloat(1.0)
             let viewHeight = self.frame.size.height
-            if frequncyValues.count > i {
-                barHeight = viewHeight * CGFloat(self.frequncyValues[i].isNaN ? 1.0 : self.frequncyValues[i]);
+            if newFrequncyValues.count > i {
+                barHeight = viewHeight * CGFloat(newFrequncyValues[i].isNaN ? 1.0 : newFrequncyValues[i]);
                 barHeight = ceil(barHeight)
             }
             
             UIView.animate(withDuration: TimeInterval(self.bounds.height / 300), animations: {
-                barView.frame = CGRect(x: CGFloat(i)*(self.barWidth + self.barIntervalWidth) + self.barIntervalWidth/2,
+                let positionIdx = self.isBarReverse ? self.barViews.count-(i+1) : i
+                barView.frame = CGRect(x: CGFloat(positionIdx)*(self.barWidth + self.barIntervalWidth) + self.barIntervalWidth/2,
                                        y: (viewHeight-barHeight)/2,
                                        width: self.barWidth,
                                        height: barHeight);

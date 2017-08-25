@@ -89,6 +89,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="barColor">
                                         <color key="value" red="0.58530144559999997" green="0.59931687519999999" blue="0.74500697849999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isBarReverse" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vmE-XU-oXc">
